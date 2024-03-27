@@ -10,17 +10,21 @@ loginForm.addEventListener('submit', function(event) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Authenticate user with Firebase
-    firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            // Successful login
-            console.log('Successfully logged in');
-            window.location.href = 'teacher_portal.html'; // Redirect to teacher portal page
-        })
-        .catch((error) => {
-            // Failed login
-            console.error('Login failed', error.message);
-        });
+    // Hardcoded admin credentials
+    const validUsername = 'admin';
+    const validPassword = 'admin123';
+
+    if (email === validUsername && password === validPassword) {
+        // Successful login
+        console.log('Successfully logged in as admin');
+        // Redirect to the admin dashboard or any other page
+        window.location.href = 'admin_dashboard.html';
+    } else {
+        // Failed login
+        console.error('Login failed. Invalid credentials.');
+        // Display error message to the user
+        alert('Invalid username or password. Please try again.');
+    }
 });
 
 // Function to handle logout
