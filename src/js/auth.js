@@ -18,7 +18,7 @@ loginForm.addEventListener('submit', function(event) {
         // Successful login
         console.log('Successfully logged in as admin');
         // Redirect to the admin dashboard or any other page
-        window.location.href = 'admin_dashboard.html';
+        window.location.href = 'adminPanel.html';
     } else {
         // Failed login
         console.error('Login failed. Invalid credentials.');
