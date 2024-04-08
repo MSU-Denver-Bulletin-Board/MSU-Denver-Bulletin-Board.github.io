@@ -32,10 +32,83 @@
             <img src="https://cdn.offcampusimages.com/public/upload/eagsvcpcbm1vru1k2u_taxmsbsflnehw4ztweyn_sng.png" alt="MSU Denver Logo" width="230">
           </a>
         </div>
+
+      <div class="login-container" id="loginContainer">
+            <label for="text-upload">Upload Text:</label>
+            <input type="text" id="text-upload" class="text-upload-btn" placeholder="Text Upload" required>
+            <label for="file-upload">Upload File:</label>
+            <input type="file" id="file-upload" class="file-upload-btn" required>
+            <div class="announcements-label" id="announcementsLabel">
+                Announcements:
+      </div>
+            <!-- Text Field for Announcements -->
+            <textarea class="announcements-text-field" id="announcementsTextField" rows="4" placeholder="Enter your announcement here..."></textarea>
+            <button type="button" onclick="submitContent()">Submit</button>
+        </div>
+
+        <!-- Display Section for Uploaded Content -->
+        <div class="content-display" id="contentDisplay">
+            <!-- Content will be displayed here -->
+        </div>
+    </div>
+
+        
         <div class="footer-background">
           <div id="urgentMessageDisplay" class="urgent-message-ticker"></div>
         </div>
     </div>
+
     <script src="/assets/javascript/script.js"></script>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const dateTimeStr = now.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true, month: 'long', day: 'numeric', year: 'numeric' });
+            document.getElementById('date-time').innerHTML = dateTimeStr;
+        }
+
+        setInterval(updateTime, 1000); // Update the time every second
+        updateTime(); // Initialize with the current time
+
+        function submitContent() {
+            const textUploadValue = document.getElementById('text-upload').value;
+            const fileUploadInput = document.getElementById('file-upload');
+            const file = fileUploadInput.files[0];
+            const announcementsText = document.getElementById('announcementsTextField').value;
+            
+            // Display text content
+            if (textUploadValue !== '') {
+                document.getElementById('contentDisplay').innerHTML += `<p>${textUploadValue}</p>`;
+            }
+
+            // Display file content
+            if (file) {
+                if (file.type.startsWith('image')) { // Check if file is an image
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imageUrl = event.target.result;
+                        document.getElementById('contentDisplay').innerHTML += `<img src="${imageUrl}" class="displayed-image" alt="Uploaded Image">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file.type.startsWith('video')) { // Check if file is a video
+                    document.getElementById('contentDisplay').innerHTML += `<video src="${URL.createObjectURL(file)}" class="displayed-video" controls></video>`;
+                } else { // If file is neither image nor video
+                    document.getElementById('contentDisplay').innerHTML += `<p>Unsupported file type: ${file.name}</p>`;
+                }
+            }
+
+            // Display announcements
+            if (announcementsText !== '') {
+                document.getElementById('contentDisplay').innerHTML += `<p>${announcementsText}</p>`;
+            }
+
+            // Clear text field after submission
+            document.getElementById('announcementsTextField').value = '';
+
+            // Scroll to the bottom of the newsfeed
+            document.getElementById('contentDisplay').scrollTop = document.getElementById('contentDisplay').scrollHeight;
+        }
+    </script>
+
+    
 </body>
 </html>
